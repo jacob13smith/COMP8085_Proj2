@@ -10,12 +10,9 @@ class Review:
         self.funny = data_dict.get('funny')
         self.cool = data_dict.get('cool')
         self.text = data_dict.get('text')
-<<<<<<< HEAD
-=======
         self.date = data_dict.get('date')
         self.embedded_text = None
 
->>>>>>> 9c38f15 (contextual embeddings)
 
     def __str__(self):
         output = "{\n    Review ID: " + self.review_id + "\n    Stars: " + str(self.stars) + "\n    Useful: " + str(self.useful) + "\n    Funny: " + str(self.funny) + "\n    Cool: " + str(self.cool) + "\n    Text: " + self.text + "\n}"
