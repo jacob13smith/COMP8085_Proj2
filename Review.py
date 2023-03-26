@@ -12,5 +12,5 @@ class Review:
         self.text = data_dict.get('text')
 
     def __str__(self):
-        output = "{\nReview ID: " + self.review_id + "\nStars: " + str(self.stars) + "\nUseful: " + str(self.useful) + "\nFunny: " + str(self.funny) + "\nCool: " + str(self.cool) + "\nText: " + self.text + "\n}"
+        output = "{\n    Review ID: " + self.review_id + "\n    Stars: " + str(self.stars) + "\n    Useful: " + str(self.useful) + "\n    Funny: " + str(self.funny) + "\n    Cool: " + str(self.cool) + "\n    Text: " + self.text + "\n}"
         return output

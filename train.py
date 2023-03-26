@@ -1,5 +1,6 @@
 import json
 from Review import Review
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 def main():
     reviews = []
@@ -10,7 +11,7 @@ def main():
         skipped = 0
         for entry in train:
             total += 1
-            if total > 10: break
+            if total > 9: break
             try:
                 review = Review(json.loads(entry))
                 reviews.append(review)
@@ -22,7 +23,10 @@ def main():
     print("Total reviews skipped: " + str(skipped))
     print("Total useful reviews: " + str(processed))
 
-
+    # Train the model(s) below with the reviews[] array
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform([review.text for review in reviews])
+    
 
     return 0
 
