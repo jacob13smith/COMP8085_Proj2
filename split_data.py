@@ -8,15 +8,18 @@ def main():
                     help='A decimal number representing percentage of original data to be split into training')
     args = parser.parse_args()
 
-    total_entries = sum(1 for line in open('yelp_academic_dataset_review.json'))
+    total_entries = sum(1 for _ in open('yelp_academic_dataset_review.json', encoding="utf-8"))
     current_entry_index = 0
-    with open('yelp_academic_dataset_review.json') as input, open('training_set.json', 'w') as train, open('test_set.json', 'w') as test:
+    with open('yelp_academic_dataset_review.json', encoding="utf-8") as input, open('training_set.json', 'w', encoding="utf-8") as train, open('test_set.json', 'w', encoding="utf-8") as test:
         for line in input:
             if current_entry_index < total_entries * args.training_size:
                 train.write(line)
             else:
                 test.write(line)
             current_entry_index += 1
+    print("Total records: " + str(current_entry_index))
+    print("Training records: " + str(int(total_entries * args.training_size)))
+    print("Testing records: " + str(int(current_entry_index - total_entries * (args.training_size))))
     return
 
 
