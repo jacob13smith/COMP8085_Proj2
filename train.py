@@ -1,6 +1,8 @@
 import json
 from Review import Review
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.tree import DecisionTreeClassifier
+import pickle
 
 def main():
     reviews = []
@@ -10,8 +12,8 @@ def main():
         processed = 0
         skipped = 0
         for entry in train:
+            if total >= 100000: break
             total += 1
-            if total > 9: break
             try:
                 review = Review(json.loads(entry))
                 reviews.append(review)
@@ -24,9 +26,17 @@ def main():
     print("Total useful reviews: " + str(processed))
 
     # Train the model(s) below with the reviews[] array
-    vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform([review.text for review in reviews])
-    
+    vectorizer = TfidfVectorizer(max_features=10000)
+    text_vectors = vectorizer.fit_transform([review.text for review in reviews])
+    stars = [review.stars for review in reviews]
+
+    model = DecisionTreeClassifier()
+    model.fit(text_vectors, stars)
+
+    with open('model.pickle', 'wb') as f:
+        pickle.dump(model, f)
+    with open('vectorizer.pickle', 'wb') as f:
+        pickle.dump(vectorizer, f)
 
     return 0
 
