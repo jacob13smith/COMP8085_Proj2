@@ -5,6 +5,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 import pickle
 import argparse
+import math
 
 techniques = ['bert', 'dtc', 'svm']
 
@@ -17,8 +18,8 @@ def main():
                     help='Which model to use for validation.')
     parser.add_argument('-t', dest='enable_tuning', default=False, action='store_true',
                     help='Optional flag to enable hyperparameter tuning during training')
-    parser.add_argument('-max-entries', dest='enable_tuning', default=False, action='store_true',
-                    help='Optional flag to enable hyperparameter tuning during training')
+    parser.add_argument('--max-validate', dest='max_validate_entries', type=float, default=math.inf,
+                    help='Maximum number of reviews to validate the model with.')
     args = parser.parse_args()
 
     # Load test dataset
@@ -27,6 +28,7 @@ def main():
         total = 0
         print('Pre-processing data from validation dataset...\n')
         for entry in test:
+            if total >= args.max_validate_entries: break
             total += 1
             try:
                 review = Review(json.loads(entry))

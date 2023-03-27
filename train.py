@@ -16,6 +16,8 @@ def main():
                     help='Which technique to train the model for.')
     parser.add_argument('-t', dest='enable_tuning', default=False, action='store_true',
                     help='Optional flag to enable hyperparameter tuning during training')
+    parser.add_argument('--max-train', dest='max_train_entries', type=int, default=10000,
+                    help='Maximum number of reviews to train the model with.')
     args = parser.parse_args()
 
     reviews = []
@@ -26,7 +28,7 @@ def main():
         processed = 0
         skipped = 0
         for entry in train:
-            if total >= 1000000: break
+            if total >= args.max_train_entries: break
             total += 1
             try:
                 review = Review(json.loads(entry))
