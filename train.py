@@ -45,7 +45,7 @@ def main():
 
         print('Vectorizing words found in all review texts...\n')
         # Train the model(s) below with the reviews[] array
-        vectorizer = TfidfVectorizer(max_features=20000)
+        vectorizer = TfidfVectorizer(max_features=20000, stop_words='english')
         text_vectors = vectorizer.fit_transform([review.text for review in reviews])
         stars = [review.stars for review in reviews]
 
