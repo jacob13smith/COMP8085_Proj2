@@ -3,6 +3,8 @@ from Review import Review
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.svm import SVC
 import pickle
 import argparse
 
@@ -73,6 +75,34 @@ def main():
         pass
     elif args.technique == 'svm':
         # SVM code
+        # Split the data into text and labels
+        text = [review.text for review in reviews]
+        stars = [review.stars for review in reviews]
+        useful = [review.useful for review in reviews]
+        funny = [review.funny for review in reviews]
+        cool = [review.cool for review in reviews]
+
+        # Convert the text into a bag-of-words representation
+        stopWords = ['english', 'french', 'spanish', 'russian']
+        vectorizer = CountVectorizer(stop_words= stopWords)
+        X = vectorizer.fit_transform(text)
+
+        # Train SVM models to predict star ratings, usefulness, funniness, and coolness
+        clf_stars = SVC(kernel='linear', random_state=42)
+        clf_stars.fit(X, stars)
+
+        clf_useful = SVC(kernel='linear', random_state=42)
+        clf_useful.fit(X, useful)
+
+        clf_funny = SVC(kernel='linear', random_state=42)
+        clf_funny.fit(X, funny)
+
+        clf_cool = SVC(kernel='linear', random_state=42)
+        clf_cool.fit(X, cool)
+
+        # Save the trained models and vectorizer to output files
+        with open('svm.pickle', 'wb') as f:
+            pickle.dump((clf_stars, clf_useful, clf_funny, clf_cool, vectorizer), f)
         pass
 
 
