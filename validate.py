@@ -73,6 +73,37 @@ def main():
 
     elif args.technique == 'svm':
         # SVM code
+        # Split the data into text and labels
+        text = [review.text for review in reviews]
+        stars = [review.stars for review in reviews]
+        useful = [review.useful for review in reviews]
+        funny = [review.funny for review in reviews]
+        cool = [review.cool for review in reviews]
+        # Load the trained models and vectorizer from the input files
+        with open('svm.pickle', 'rb') as f:
+            clf_stars, clf_useful, clf_funny, clf_cool, vectorizer = pickle.load(f)
+
+        # Convert the test data into a bag-of-words representation using the vectorizer
+        X_test = vectorizer.transform(text)
+
+        # Predict the ratings and review attributes using the trained models
+        y_pred_stars = clf_stars.predict(X_test)
+        y_pred_useful = clf_useful.predict(X_test)
+        y_pred_funny = clf_funny.predict(X_test)
+        y_pred_cool = clf_cool.predict(X_test)
+        
+        # Print the classification reports to evaluate the models' performance
+        print('Star ratings:')
+        print(classification_report(stars, y_pred_stars))
+
+        print('Usefulness:')
+        print(classification_report(useful, y_pred_useful))
+
+        print('Funniness:')
+        print(classification_report(funny, y_pred_funny))
+
+        print('Coolness:')
+        print(classification_report(cool, y_pred_cool))
         pass
     return 0
 
