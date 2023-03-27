@@ -5,7 +5,7 @@ def main():
                     prog='Yelp Data splitter',
                     description='Split Yelp academic review dataset into training and test')
     parser.add_argument('training_size', type=float,
-                    help='A decimal number representing percentage of original data to be split into training')
+                    help='A decimal number representing percentage of original data to be used for training (between 0.0 and 1.0)')
     args = parser.parse_args()
 
     total_entries = sum(1 for _ in open('yelp_academic_dataset_review.json', encoding="utf-8"))
